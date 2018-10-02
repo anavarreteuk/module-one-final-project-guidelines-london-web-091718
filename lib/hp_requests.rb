@@ -11,6 +11,7 @@ def show_random_charm
   response = RestClient.get(url)
   hpinfo = JSON.parse(response)
   charm_rq = hpinfo.select{|spell| spell["type"] == "Charm"}.sample
+  puts "Wooooosh! Here is a charm, #{charm_rq["spell"]}, which #{charm_rq["effect"]}."
 end
 
 def show_random_hex
@@ -18,6 +19,7 @@ def show_random_hex
   response = RestClient.get(url)
   hpinfo = JSON.parse(response)
   hex_rq = hpinfo.select{|spell| spell["type"] == "Hex"}.sample
+  puts "Wooooosh! Here is a hex, #{hex_rq["spell"]}, which #{hex_rq["effect"]}."
 end
 
 def show_random_curse
@@ -25,6 +27,7 @@ def show_random_curse
   response = RestClient.get(url)
   hpinfo = JSON.parse(response)
   curse_rq = hpinfo.select{|spell| spell["type"] == "Curse"}.sample
+  puts "Wooooosh! Here is a curse, #{curse_rq["spell"]}, which #{curse_rq["effect"]}."
 end
 
 def show_random_spell
@@ -32,6 +35,7 @@ def show_random_spell
   response = RestClient.get(url)
   hpinfo = JSON.parse(response)
   spell_rq = hpinfo.select{|spell| spell["type"] == "Spell"}.sample
+  puts "Wooooosh! Here is a spell, #{spell_rq["spell"]}, which #{spell_rq["effect"]}."
 end
 
 def show_random_enchantment
@@ -39,10 +43,10 @@ def show_random_enchantment
   response = RestClient.get(url)
   hpinfo = JSON.parse(response)
   enchantment_rq = hpinfo.select{|spell| spell["type"] == "Enchantment"}.sample
+  puts "Wooooosh! Here is an enchantment, #{enchantment_rq["spell"]}, which #{enchantment_rq["effect"]}."
 end
 
 
-#ollie = Spell.create(name: olliespell["spell"], type: olliespell["type"], effect: olliespell["effect"])
+# ollie = Spell.create(name: olliespell["spell"], type: olliespell["type"], effect: olliespell["effect"])
 
 # binding.pry
-puts "EOF"
