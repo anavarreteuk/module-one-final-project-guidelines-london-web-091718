@@ -1,6 +1,9 @@
 require 'rest-client'
+require 'active_record'
 require 'json'
 require 'pry'
+require_relative '../app/models/spell.rb'
+
 # Bundler.require
 
 def show_random_charm
@@ -38,6 +41,8 @@ def show_random_enchantment
   enchantment_rq = hpinfo.select{|spell| spell["type"] == "Enchantment"}.sample
 end
 
-binding.pry
 
+#ollie = Spell.create(name: olliespell["spell"], type: olliespell["type"], effect: olliespell["effect"])
+
+# binding.pry
 puts "EOF"

@@ -4,6 +4,7 @@ class CreateSpells < ActiveRecord::Migration[5.0]
       t.string :name
       t.string :type
       t.string :effect
-    end 
+      t.integer :spellbook_id
+    end
   end
 end
