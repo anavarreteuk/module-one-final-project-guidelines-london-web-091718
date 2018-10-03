@@ -4,6 +4,7 @@ require_relative '../config/environment'
 
 cli = CLI.new
 
+system("clear")
 cli.welcome
 cli.get_user_name_and_create
 cli.display_home_list

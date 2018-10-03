@@ -9,4 +9,5 @@ gem "rest-client"
 gem "json"
 gem "rake"
 gem 'tty-prompt'
+gem 'terminal-table'
 # gem "activerecord", :require => 'active_record'

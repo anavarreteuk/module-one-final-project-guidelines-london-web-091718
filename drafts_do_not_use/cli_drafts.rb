@@ -1,6 +1,3 @@
-class CLI
-
-PROMPT = TTY::Prompt.new
 
   def welcome
     puts "Good day! My name is Professor Flitwick and will be helping you to create your very first Spell Book. What is your Wizard name?"
@@ -98,81 +95,96 @@ PROMPT = TTY::Prompt.new
     end
   end
 
-end
 
-def save_or_ignore_spell
-  choice = PROMPT.select("Would you like to save #{Spell.last.name} to your spellbook?", %w(Yes No))
-  # user_spellbook.flatten.count
-  case choice
-  when "Yes"
+  def save_or_ignore_spell
     user_spellbook = []
     user_spellbook << Spell.where(spellbook_id: Spellbook.last.id)
     if user_spellbook.flatten.count > 4
       puts "You have reached the limit of 5 spells. Let's take a look at your choices."
       view_spellbook
     else
-      Spell.update(Spell.last, :spellbook_id => Spellbook.last.id)
-      puts "Interesting. Very interesting...#{Spell.last.name} has been added to #{Spellbook.last.name}, #{User.last.name}."
-      puts "Now choose another!"
-      begin_spellbook
+      choice = PROMPT.select("Would you like to save #{Spell.last.name} to your spellbook?", %w(Yes No))
+      case choice
+      when "Yes"
+        Spell.update(Spell.last, :spellbook_id => Spellbook.last.id)
+        puts "Interesting. Very interesting...#{Spell.last.name} has been added to #{Spellbook.last.name}, #{User.last.name}."
+        puts "Now choose another!"
+        begin_spellbook
+      when "No"
+        puts "If that is your wish, then let us try another."
+        second_save_or_ignore_spell
+      end
     end
-  when "No"
-    puts "If that is your wish, then let us try another."
-    second_save_or_ignore_spell
   end
-end
+
+  def save_or_ignore_spell
+    choice = PROMPT.select("Would you like to save #{Spell.last.name} to your spellbook?", %w(Yes No))
+    # user_spellbook.flatten.count
+    case choice
+    when "Yes"
+      user_spellbook = []
+      user_spellbook << Spell.where(spellbook_id: Spellbook.last.id)
+      if user_spellbook.flatten.count > 4
+        puts "You have reached the limit of 5 spells. Let's take a look at your choices."
+        view_spellbook
+      else
+        Spell.update(Spell.last, :spellbook_id => Spellbook.last.id)
+        puts "Interesting. Very interesting...#{Spell.last.name} has been added to #{Spellbook.last.name}, #{User.last.name}."
+        puts "Now choose another!"
+        begin_spellbook
+      end
+    when "No"
+      puts "If that is your wish, then let us try another."
+      second_save_or_ignore_spell
+    end
+  end
+
+  # def spellbook_instructions_and_choice
+  #   spell_types = ["curses", "hexes", "charms", "enchantments", "spells"]
+  #   # first_choice = ""
+  #   puts "There are five kinds of spells: curses, hexes, charms, enchantments and regular spells. Which would you like to explore first?"
+  #     loop do
+  #     first_choice = gets.chomp
+  #     if first_choice.downcase == "curses"
+  #       show_random_curse
+  #       break
+  #     elsif first_choice.downcase == "hexes"
+  #       show_random_hex
+  #       break
+  #     elsif first_choice.downcase == "charms"
+  #       show_random_charm
+  #       break
+  #     elsif first_choice.downcase == "enchantments"
+  #       show_random_enchantment
+  #       break
+  #     elsif first_choice.downcase == "spells"
+  #       show_random_spell
+  #       break
+  #     else
+  #       puts " "
+  #       puts "You spell like a Muggle...that is not magic, please pick again..."
+  #       puts " "
+  #       puts "CURSES"
+  #       puts "HEXES"
+  #       puts "CHARMS"
+  #       puts "ENCHANTMENTS"
+  #       puts "SPELLS"
+  #     end
+  #   end
+  # end
 
 
-
-
-
-# def spellbook_instructions_and_choice
-#   spell_types = ["curses", "hexes", "charms", "enchantments", "spells"]
-#   # first_choice = ""
-#   puts "There are five kinds of spells: curses, hexes, charms, enchantments and regular spells. Which would you like to explore first?"
-#     loop do
-#     first_choice = gets.chomp
-#     if first_choice.downcase == "curses"
-#       show_random_curse
-#       break
-#     elsif first_choice.downcase == "hexes"
-#       show_random_hex
-#       break
-#     elsif first_choice.downcase == "charms"
-#       show_random_charm
-#       break
-#     elsif first_choice.downcase == "enchantments"
-#       show_random_enchantment
-#       break
-#     elsif first_choice.downcase == "spells"
-#       show_random_spell
-#       break
-#     else
-#       puts " "
-#       puts "You spell like a Muggle...that is not magic, please pick again..."
-#       puts " "
-#       puts "CURSES"
-#       puts "HEXES"
-#       puts "CHARMS"
-#       puts "ENCHANTMENTS"
-#       puts "SPELLS"
-#     end
-#   end
-# end
-
-
-
-def view_spellbook
-  user_spellbook = []
-  user_spellbook << Spell.where(spellbook_id: Spellbook.last.id)
-  flattened_user_spellbook = user_spellbook.flatten
-  puts "********************************************************************************************************"
-  puts "<-------#{Spellbook.last.name.upcase}'S SPELLBOOK------->"
-  puts "********************************************************************************************************"
-  puts "1. #{flattened_user_spellbook[0]["name"]}: #{flattened_user_spellbook[0]["effect"]}"
-  puts "2. #{flattened_user_spellbook[1]["name"]}: #{flattened_user_spellbook[1]["effect"]}"
-  puts "3. #{flattened_user_spellbook[2]["name"]}: #{flattened_user_spellbook[2]["effect"]}"
-  puts "4. #{flattened_user_spellbook[3]["name"]}: #{flattened_user_spellbook[3]["effect"]}"
-  puts "5. #{flattened_user_spellbook[4]["name"]}: #{flattened_user_spellbook[4]["effect"]}"
-  sorting
-end
+  def view_spellbook
+    user_spellbook = []
+    user_spellbook << Spell.where(spellbook_id: Spellbook.last.id)
+    flattened_user_spellbook = user_spellbook.flatten
+    puts "********************************************************************************************************"
+    puts "<-------#{Spellbook.last.name.upcase}'S SPELLBOOK------->"
+    puts "********************************************************************************************************"
+    puts "1. #{flattened_user_spellbook[0]["name"]}: #{flattened_user_spellbook[0]["effect"]}"
+    puts "2. #{flattened_user_spellbook[1]["name"]}: #{flattened_user_spellbook[1]["effect"]}"
+    puts "3. #{flattened_user_spellbook[2]["name"]}: #{flattened_user_spellbook[2]["effect"]}"
+    puts "4. #{flattened_user_spellbook[3]["name"]}: #{flattened_user_spellbook[3]["effect"]}"
+    puts "5. #{flattened_user_spellbook[4]["name"]}: #{flattened_user_spellbook[4]["effect"]}"
+    sorting
+  end
