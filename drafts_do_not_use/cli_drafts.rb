@@ -100,6 +100,28 @@ PROMPT = TTY::Prompt.new
 
 end
 
+def save_or_ignore_spell
+  choice = PROMPT.select("Would you like to save #{Spell.last.name} to your spellbook?", %w(Yes No))
+  # user_spellbook.flatten.count
+  case choice
+  when "Yes"
+    user_spellbook = []
+    user_spellbook << Spell.where(spellbook_id: Spellbook.last.id)
+    if user_spellbook.flatten.count > 4
+      puts "You have reached the limit of 5 spells. Let's take a look at your choices."
+      view_spellbook
+    else
+      Spell.update(Spell.last, :spellbook_id => Spellbook.last.id)
+      puts "Interesting. Very interesting...#{Spell.last.name} has been added to #{Spellbook.last.name}, #{User.last.name}."
+      puts "Now choose another!"
+      begin_spellbook
+    end
+  when "No"
+    puts "If that is your wish, then let us try another."
+    second_save_or_ignore_spell
+  end
+end
+
 
 
 
