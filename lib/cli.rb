@@ -46,10 +46,9 @@ PROMPT = TTY::Prompt.new
     save_or_ignore_spell
   end
 
+
   def save_or_ignore_spell
-    user_spellbook = []
-    user_spellbook << Spell.where(spellbook_id: Spellbook.last.id)
-    if user_spellbook.flatten.count > 4
+    if spellbook_array.count > 4
       puts "You have reached the limit of 5 spells. Let's take a look at your choices."
       view_spellbook
     else
@@ -66,6 +65,27 @@ PROMPT = TTY::Prompt.new
       end
     end
   end
+
+  # def save_or_ignore_spell
+  #   user_spellbook = []
+  #   user_spellbook << Spell.where(spellbook_id: Spellbook.last.id)
+  #   if user_spellbook.flatten.count > 4
+  #     puts "You have reached the limit of 5 spells. Let's take a look at your choices."
+  #     view_spellbook
+  #   else
+  #     choice = PROMPT.select("Would you like to save #{Spell.last.name} to your spellbook?", %w(Yes No))
+  #     case choice
+  #     when "Yes"
+  #       Spell.update(Spell.last, :spellbook_id => Spellbook.last.id)
+  #       puts "Interesting. Very interesting...#{Spell.last.name} has been added to #{Spellbook.last.name}, #{User.last.name}."
+  #       puts "Now choose another!"
+  #       begin_spellbook
+  #     when "No"
+  #       puts "If that is your wish, then let us try another."
+  #       second_save_or_ignore_spell
+  #     end
+  #   end
+  # end
 
   def choose_between_5_spell_types
     choice = PROMPT.select("Pick between one of these 5 spell types to receive a random spell suggestion:", %w(Curse Hex Charm Enchantment Spell))
@@ -87,17 +107,44 @@ PROMPT = TTY::Prompt.new
   end
 
   def view_spellbook
-    user_spellbook = []
-    user_spellbook << Spell.where(spellbook_id: Spellbook.last.id)
-    flattened_user_spellbook = user_spellbook.flatten
     puts "********************************************************************************************************"
     puts "<-------#{Spellbook.last.name.upcase}'S SPELLBOOK------->"
     puts "********************************************************************************************************"
-    puts "1. #{flattened_user_spellbook[0]["name"]}: #{flattened_user_spellbook[0]["effect"]}"
-    puts "2. #{flattened_user_spellbook[1]["name"]}: #{flattened_user_spellbook[1]["effect"]}"
-    puts "3. #{flattened_user_spellbook[2]["name"]}: #{flattened_user_spellbook[2]["effect"]}"
-    puts "4. #{flattened_user_spellbook[3]["name"]}: #{flattened_user_spellbook[3]["effect"]}"
-    puts "5. #{flattened_user_spellbook[4]["name"]}: #{flattened_user_spellbook[4]["effect"]}"
+    puts "1. #{spellbook_array[0]["name"]}: #{spellbook_array[0]["effect"]}"
+    puts "2. #{spellbook_array[1]["name"]}: #{spellbook_array[1]["effect"]}"
+    puts "3. #{spellbook_array[2]["name"]}: #{spellbook_array[2]["effect"]}"
+    puts "4. #{spellbook_array[3]["name"]}: #{spellbook_array[3]["effect"]}"
+    puts "5. #{spellbook_array[4]["name"]}: #{spellbook_array[4]["effect"]}"
+    sorting_offer
   end
+
+  def sorting_offer
+    puts "********************************************************************************************************"
+    puts "Well done #{User.last.name}, #{Spellbook.last.name} is complete!"
+    puts "Something I did not mention to you before...the Sorting Hat has become rather, well really quite old as of late."
+    puts "We, proffesors at Hogwarts, have become increasingly dubious at some of the Sorting Hat's sorting choices."
+    puts "We have decided that your Spell Book will provide valuable insight about your character and aid our ailing Hat in sorting you into the right house."
+    puts "********************************************************************************************************"
+    options = ["Go on then, sort me!", "No thanks - I'd rather not."]
+    choice = PROMPT.select("This leads me to asking you this: would you like to be sorted into a Hogwarts House?", options)
+    case choice
+    when options[0]
+      puts "dfngfd"
+    when options[1]
+      puts "dbfnks"
+    end
+  end
+
+  def spellbook_array
+    user_spellbook = []
+    user_spellbook << Spell.where(spellbook_id: Spellbook.last.id)
+    flattened_user_spellbook = user_spellbook.flatten
+    return flattened_user_spellbook
+  end
+
+  def sorting
+
+  end
+
 
 end
