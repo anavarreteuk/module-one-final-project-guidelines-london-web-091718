@@ -1,6 +1,6 @@
-class CreateSpells < ActiveRecord::Migration[5.0]
+class CreateMagicSpells < ActiveRecord::Migration[5.0]
   def change
-    create_table :spells do |t|
+    create_table :magic_spells do |t|
       t.string :name
       t.string :type
       t.string :effect

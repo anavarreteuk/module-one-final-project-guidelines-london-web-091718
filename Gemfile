@@ -8,4 +8,5 @@ gem "require_all"
 gem "rest-client"
 gem "json"
 gem "rake"
+gem 'tty-prompt'
 # gem "activerecord", :require => 'active_record'
