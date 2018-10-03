@@ -87,10 +87,17 @@ PROMPT = TTY::Prompt.new
   end
 
   def view_spellbook
+    user_spellbook = []
+    user_spellbook << Spell.where(spellbook_id: Spellbook.last.id)
+    flattened_user_spellbook = user_spellbook.flatten
     puts "********************************************************************************************************"
-    puts "<-------#{Spellbook.last.name.upcase}------->"
+    puts "<-------#{Spellbook.last.name.upcase}'S SPELLBOOK------->"
     puts "********************************************************************************************************"
-    puts "1. #{Spell}"
+    puts "1. #{flattened_user_spellbook[0]["name"]}: #{flattened_user_spellbook[0]["effect"]}"
+    puts "2. #{flattened_user_spellbook[1]["name"]}: #{flattened_user_spellbook[1]["effect"]}"
+    puts "3. #{flattened_user_spellbook[2]["name"]}: #{flattened_user_spellbook[2]["effect"]}"
+    puts "4. #{flattened_user_spellbook[3]["name"]}: #{flattened_user_spellbook[3]["effect"]}"
+    puts "5. #{flattened_user_spellbook[4]["name"]}: #{flattened_user_spellbook[4]["effect"]}"
   end
 
 end
