@@ -135,7 +135,7 @@ PROMPT = TTY::Prompt.new
   end
 
   def sorting
-    # binding.pry
+    binding.pry
     spellbook_array.max_by(&:spell_type)
     if !!detect_curse
       puts "AZKABAN"
@@ -151,11 +151,9 @@ PROMPT = TTY::Prompt.new
   end
 
   def most_common_spelltype
-    # spellbook_array.max_by(&:spell_type)
-    # x = spellbook_array.map{|spell| spell.spell_type}
     spell_names_array = spellbook_array.map{|spell| spell.spell_type}
     counted_hash = spell_names_array.uniq.map { |spell| [spell, spell_names_array.count(spell)] }.to_h
-    puts "PUTS AMALIE YOU WERE HERE!!!!"
+    counted_hash.key(counted_hash.values.max)
   end
 
   def detect_curse
