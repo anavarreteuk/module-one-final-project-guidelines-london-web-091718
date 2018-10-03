@@ -6,5 +6,4 @@ cli = CLI.new
 
 cli.welcome
 cli.get_user_name_and_create
-cli.get_spellbook_name
-cli.spellbook_instructions_and_choice
+cli.display_home_list

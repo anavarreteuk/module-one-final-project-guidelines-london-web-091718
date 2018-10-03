@@ -9,27 +9,49 @@ PROMPT = TTY::Prompt.new
   def get_user_name_and_create
     user_name = gets.chomp
     User.create(name: user_name)
-    puts "Lovely to meet you #{User.last.name}! What would you like to call your Spell Book?"
+    puts "Lovely to meet you #{User.last.name}!"
+  end
+
+  def display_home_list
+    options = ["Find friends/characters", "Create Spellbook"]
+    choice = PROMPT.select("What would you like to do?", options)
+    case choice
+    when "Find friends/characters"
+      puts "nfkdnslgn"
+    when "Create Spellbook"
+      get_spellbook_name
+    end
   end
 
   def get_spellbook_name
+    puts "What would you like to call your Spell Book?"
     sb_name = gets.chomp
     Spellbook.create(name: sb_name, user_id: User.last.id)
+    puts "Very creative. Let's begin filling it with 5 spells of your choice."
+    begin_spellbook
   end
 
-  def spellbook_instructions_and_choice
-      choose_between_5_spell_types
-      save_or_ignore_spell
+  def begin_spellbook
+    choose_between_5_spell_types
+    save_or_ignore_spell
   end
+
 
   def save_or_ignore_spell
-    choice1 = PROMPT.select("Would you like to save #{Spell.last.name} to your spellbook?", %w(Yes No))
-    case choice1
+    choice = PROMPT.select("Would you like to save #{Spell.last.name} to your spellbook?", %w(Yes No))
+    users_spellbook = 0
+    case choice
     when "Yes"
-      Spell.update(Spell.last, :spellbook_id => Spellbook.last.id)
-      puts "Excellent choice #{User.last.name}, #{Spell.last.name} has been added to #{Spellbook.last.name}!"
-      puts "Please choose another!"
-      spellbook_instructions_and_choice
+      users_spellbook += 1
+      if users_spellbook > 5
+        puts "You have reached the limit of 5 spells. Let's take a look at your choices."
+        view_spellbook
+      else
+        Spell.update(Spell.last, :spellbook_id => Spellbook.last.id)
+        puts "Excellent choice #{User.last.name}, #{Spell.last.name} has been added to #{Spellbook.last.name}!"
+        puts "Please choose another!"
+        begin_spellbook
+      end
     when "No"
       puts "Mmmmmm. Interesting. Very interesting..."
       second_save_or_ignore_spell
@@ -53,6 +75,10 @@ PROMPT = TTY::Prompt.new
       choose_between_5_spell_types
       save_or_ignore_spell
     end
+  end
+
+  def view_spellbook
+    puts "kjfbds"
   end
 
 end
