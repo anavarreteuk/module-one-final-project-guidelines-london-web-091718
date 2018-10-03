@@ -10,4 +10,6 @@ gem "json"
 gem "rake"
 gem 'tty-prompt'
 gem 'terminal-table'
+gem 'tty-font'
+
 # gem "activerecord", :require => 'active_record'
