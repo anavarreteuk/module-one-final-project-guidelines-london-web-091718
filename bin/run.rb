@@ -5,6 +5,10 @@ require_relative '../config/environment'
 cli = CLI.new
 
 system("clear")
+get_houses
+cli.welcome_first
 cli.welcome
 cli.get_user_name_and_create
 cli.display_home_list
+cli.begin_spellbook
+cli.sorting_offer
