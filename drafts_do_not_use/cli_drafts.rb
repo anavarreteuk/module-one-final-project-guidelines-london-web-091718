@@ -188,3 +188,50 @@
     puts "5. #{flattened_user_spellbook[4]["name"]}: #{flattened_user_spellbook[4]["effect"]}"
     sorting
   end
+
+
+  # def sorting
+  #   puts ""
+  #   puts ""
+  #   puts_slow PASTEL.yellow("* * * * * * * * S O R T I N G * * * * * * * *")
+  #   puts ""
+  #   puts ""
+  #   # bar = ProgressBar.new(100, :bar, :elapsed)
+  #   if !!detect_curse
+  #     puts ""
+  #     puts_fast "Your desire to fill your book with at least one curse is truly frightening."
+  #     puts ""
+  #     puts_fast "On behalf of the Wizarding community, it is with regret that you are hereby expelled."
+  #     goodbye
+  #   elsif most_common_spelltype == "Hex"
+  #     puts_super_fast FONT.write("SLYTHERIN", letter_spacing: 2)
+  #     house = House.find_by name: "Slytherin"
+  #     User.last.update(:house_id => house[:id])
+  #     house_menu
+  #   elsif most_common_spelltype == "Charm"
+  #     puts_super_fast FONT.write("RAVENCLAW", letter_spacing: 2)
+  #     house = House.find_by name: "Ravenclaw"
+  #     User.last.update(:house_id => house[:id])
+  #     house_menu
+  #   elsif most_common_spelltype == "Enchantment"
+  #     puts_super_fast FONT.write("GRYFFINDOR", letter_spacing: 2)
+  #     house = House.find_by name: "Gryffindor"
+  #     User.last.update(:house_id => house[:id])
+  #     house_menu
+  #   elsif most_common_spelltype == "Spell"
+  #     puts_super_fast FONT.write("HUFFLEPUFF", letter_spacing: 2)
+  #     house = House.find_by name: "Hufflepuff"
+  #     User.last.update(:house_id => house[:id])
+  #     house_menu
+  #   else
+  #     puts_super_fast FONT.write("UNSORTABLE", letter_spacing: 2)
+  #     puts_fast "You must be a Muggle. Perhaps we better try again..."
+  #     #ADD METHOD TO CHANGE A SPELL IN BOOK
+  #   end
+  # end
+  #
+  # def most_common_spelltype
+  #   spell_names_array = spellbook_array.map{|spell| spell.spell_type}
+  #   counted_hash = spell_names_array.uniq.map { |spell| [spell, spell_names_array.count(spell)] }.to_h
+  #   counted_hash.key(counted_hash.values.max)
+  # end
