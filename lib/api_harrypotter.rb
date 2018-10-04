@@ -16,3 +16,10 @@ def show_random_spell(spell_type)
   puts "********************************************************************************************************"
   Spell.create(name: random_spell["spell"], spell_type: random_spell["type"], effect: random_spell["effect"], spellbook_id: nil)
 end
+
+def get_houses
+  url = 'https://www.potterapi.com/v1/houses?key=$2a$10$GyAEHpxPsTfoiKHANOUWiOviE8TjqBoYk99ZGZ4dAXwu65dMGerIi'
+  response = RestClient.get(url)
+  hpinfo = JSON.parse(response)
+  hpinfo.each{|house| House.create(name: house["name"], mascot: house["mascot"], head_of_house: house["headOfHouse"], house_ghost: house["houseGhost"], founder: house["founder"], values: house["values"], colours: house["colors"])}
+end

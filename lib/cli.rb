@@ -135,6 +135,7 @@ class CLI
   end
 
   def sorting
+    get_houses
     # bar = ProgressBar.new(100, :bar, :elapsed)
     if !!detect_curse
       puts ""
@@ -145,6 +146,7 @@ class CLI
       puts_super_fast FONT.write("THE END.", letter_spacing: 1)
     elsif most_common_spelltype == "Hex"
       puts_super_fast FONT.write("SLYTHERIN", letter_spacing: 2)
+      House
     elsif most_common_spelltype == "Charm"
       puts_super_fast FONT.write("RAVENCLAW", letter_spacing: 2)
     elsif most_common_spelltype == "Enchantment"
