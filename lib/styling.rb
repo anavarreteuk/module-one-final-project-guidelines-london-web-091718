@@ -1,5 +1,9 @@
 module Styling
 
+  PROMPT = TTY::Prompt.new
+  FONT = TTY::Font.new(:doom)
+  PASTEL = Pastel.new
+
   def puts_slow(str)
     chars = str.split(//)
     chars.each do |c|

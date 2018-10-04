@@ -11,11 +11,11 @@ def show_random_spell(spell_type)
   response = RestClient.get(url)
   hpinfo = JSON.parse(response)
   random_spell = hpinfo.select{|spell_hash| spell_hash["type"] == spell_type}.sample
-  puts "********************************************************************************************************"
+  puts_super_fast PASTEL.yellow("********************************************************************************************************")
   puts ""
   puts "Wooooosh! Here is a #{spell_type}, #{random_spell["spell"]}, which #{random_spell["effect"]}."
   puts ""
-  puts "********************************************************************************************************"
+  puts_super_fast PASTEL.yellow("********************************************************************************************************")
   Spell.create(name: random_spell["spell"], spell_type: random_spell["type"], effect: random_spell["effect"], spellbook_id: nil)
 end
 

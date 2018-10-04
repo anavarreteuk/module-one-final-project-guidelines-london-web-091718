@@ -93,6 +93,7 @@ PLATFORMS
 
 DEPENDENCIES
   json
+  pastel
   progress_bar
   pry
   rake

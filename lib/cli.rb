@@ -2,9 +2,6 @@ include Styling
 
 class CLI
 
-  PROMPT = TTY::Prompt.new
-  FONT = TTY::Font.new(:doom)
-
   def music
     @pid = fork{ exec 'afplay', "lib/opening.mp3" }
   end
@@ -50,7 +47,7 @@ class CLI
 
   def welcome
     puts_super_fast FONT.write(" ALOHOMORA !", letter_spacing: 3)
-    puts_super_fast "********************************************************************************************************"
+    puts_super_fast PASTEL.yellow("********************************************************************************************************")
     puts ""
     puts_fast "Hello there."
     puts ""
@@ -58,7 +55,7 @@ class CLI
     puts ""
     puts_fast "What is your Wizard name?"
     puts ""
-    puts_super_fast "********************************************************************************************************"
+    puts_super_fast PASTEL.yellow("********************************************************************************************************")
   end
 
   def get_user_name_and_create
@@ -68,7 +65,7 @@ class CLI
     puts ""
     puts_fast "Lovely to meet you #{User.last.name}!"
     puts ""
-    puts_super_fast "********************************************************************************************************"
+    puts_super_fast PASTEL.yellow("********************************************************************************************************")
   end
 
   def display_home_list
@@ -97,7 +94,7 @@ class CLI
     puts ""
     puts_fast "Very creative. Let's begin filling #{Spellbook.last.name} with some magic."
     puts ""
-    puts_super_fast "********************************************************************************************************"
+    puts_super_fast PASTEL.yellow("********************************************************************************************************")
     #begin_spellbook
   end
 
@@ -122,6 +119,7 @@ class CLI
   def save_or_ignore_spell
     if spellbook_array.count > 4
       puts_fast "You have reached the limit of 5 spells. Let's take a look at your choices."
+      puts ""
       view_spellbook
     else
       puts ""
@@ -170,22 +168,22 @@ class CLI
     table = Terminal::Table.new :title => "#{Spellbook.last.name.upcase}", :headings => ['SPELL', 'EFFECT'], :rows => rows, :style => {:all_separators => true}
     table.style = {:width => 100, :padding_left => 2, :border_x => "=", :border_i => "+"}
 
-    puts table
+    puts PASTEL.black.on_white(table)
     #sorting_offer
   end
 
   def sorting_offer
-    puts_super_fast "********************************************************************************************************"
+    puts_super_fast PASTEL.yellow("********************************************************************************************************")
     puts_fast "Well done #{User.last.name}, your book, #{Spellbook.last.name}, is complete!"
     puts ""
     puts_fast "Something I did not mention to you before...the Sorting Hat has become rather, well really quite old as of late."
     puts ""
-    puts_fast "We, professors at Hogwarts, have become increasingly concerned at some of the Sorting Hat's sorting choices."
+    puts_fast "We professors at Hogwarts, have become increasingly concerned at some of the Sorting Hat's sorting choices."
     puts ""
     puts_fast "Your Spell Book can give us valuable insight about your character and personality based on your choices of spells."
     puts ""
     puts_fast "Hence, it has been decided by Dumbledoor that with your consent, we may use your book to assist the Sorting Hat in placing you into the right house."
-    puts_super_fast "********************************************************************************************************"
+    puts_super_fast PASTEL.yellow("********************************************************************************************************")
     options = ["Go on then, sort me!", "No thanks - I'd rather not."]
     choice = PROMPT.select("Would you like to be sorted into a Hogwarts House?", options)
     case choice
@@ -198,6 +196,7 @@ class CLI
   end
 
   def sorting
+    puts_slow PASTEL.yellow("* * * * * S O R T I N G * * * * ")
     # bar = ProgressBar.new(100, :bar, :elapsed)
     if !!detect_curse
       puts ""
@@ -270,9 +269,26 @@ class CLI
 
     table = Terminal::Table.new :title => "#{house.name.upcase}", :headings => ['INFORMATION', 'DETAILS'], :rows => rows, :style => {:all_separators => true}
     table.style = {:width => 100, :padding_left => 2, :border_x => "=", :border_i => "+"}
-    puts table
+
+    colourfy_table(table)
+    # puts table
     take_me_home_or_quit
   end
+
+  def colourfy_table(table)
+    user_house_id = User.last.house_id
+    house = House.find_by id: user_house_id
+    if house.name == "Gryffindor"
+      puts PASTEL.bright_red(table)
+    elsif house.name == "Ravenclaw"
+      puts PASTEL.bright_blue(table)
+    elsif house.name == "Slytherin"
+      puts PASTEL.bright_green(table)
+    elsif house.name == "Hufflepuff"
+      puts PASTEL.bright_yellow(table)
+    end
+  end
+
 
   def take_me_home_or_quit
     options = ["Show me more! Take me to the secret menu!", "Quit."]
@@ -308,8 +324,18 @@ class CLI
   end
 
   def goodbye
-    puts_super_fast FONT.write("Finite Incantatem", letter_spacing: 1)
-    puts_super_fast FONT.write("THE END.", letter_spacing: 1)
+    puts ""
+    puts PASTEL.yellow("********************************************************************************************************")
+    puts ""
+    puts_super_fast FONT.write("FINITE", letter_spacing: 1)
+    puts_super_fast FONT.write("INCANTATEM !", letter_spacing: 1)
+    puts_super_fast FONT.write("Goodbye.", letter_spacing: 1)
+    puts ""
+    puts PASTEL.yellow("********************************************************************************************************")
+    puts PASTEL.yellow("********************************************************************************************************")
+    puts PASTEL.yellow("********************************************************************************************************")
+    puts PASTEL.yellow("********************************************************************************************************")
+    puts PASTEL.yellow("********************************************************************************************************")
     exit
   end
 
