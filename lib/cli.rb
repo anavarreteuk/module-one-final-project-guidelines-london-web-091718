@@ -316,11 +316,6 @@ class CLI
     end
   end
 
-
-  def edit_spellbook
-
-  end
-
   def goodbye
     puts ""
     puts PASTEL.yellow("********************************************************************************************************")

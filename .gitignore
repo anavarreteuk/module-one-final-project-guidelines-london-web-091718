@@ -2,9 +2,11 @@
 .idea
 
 log
-node_modules
 out
 tmp
+node_modules
+drafts_do_not_use
+config/api_key.rb
 
 *.iml
 *.log

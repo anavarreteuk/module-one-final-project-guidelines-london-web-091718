@@ -3,11 +3,12 @@ require 'active_record'
 require 'json'
 require 'pry'
 require_relative '../app/models/spell.rb'
+require_relative '../config/api_key'
 
 # Bundler.require
 
 def show_random_spell(spell_type)
-  url = 'https://www.potterapi.com/v1/spells?key=$2a$10$GyAEHpxPsTfoiKHANOUWiOviE8TjqBoYk99ZGZ4dAXwu65dMGerIi'
+  url = 'https://www.potterapi.com/v1/spells?key=' + KEY[:key]
   response = RestClient.get(url)
   hpinfo = JSON.parse(response)
   random_spell = hpinfo.select{|spell_hash| spell_hash["type"] == spell_type}.sample
@@ -20,14 +21,14 @@ def show_random_spell(spell_type)
 end
 
 def get_houses
-  url = 'https://www.potterapi.com/v1/houses?key=$2a$10$GyAEHpxPsTfoiKHANOUWiOviE8TjqBoYk99ZGZ4dAXwu65dMGerIi'
+  url = 'https://www.potterapi.com/v1/houses?key=' + KEY[:key]
   response = RestClient.get(url)
   hpinfo = JSON.parse(response)
   hpinfo.each{|house| House.create(name: house["name"], mascot: house["mascot"], head_of_house: house["headOfHouse"], house_ghost: house["houseGhost"], founder: house["founder"], values: house["values"], colours: house["colors"])}
 end
 
 def show_character_list_api
-  url = 'https://www.potterapi.com/v1/characters?key=$2a$10$GyAEHpxPsTfoiKHANOUWiOviE8TjqBoYk99ZGZ4dAXwu65dMGerIi'
+  url = 'https://www.potterapi.com/v1/characters?key=' + KEY[:key]
   response = RestClient.get(url)
   sfacinfo = JSON.parse(response)
   characters = sfacinfo.map{|character_hash| character_hash["name"]}
@@ -35,7 +36,7 @@ def show_character_list_api
 end
 
 def character_in_detail(input)
-  url = 'https://www.potterapi.com/v1/characters?key=$2a$10$GyAEHpxPsTfoiKHANOUWiOviE8TjqBoYk99ZGZ4dAXwu65dMGerIi'
+  url = 'https://www.potterapi.com/v1/characters?key=' + KEY[:key]
   response = RestClient.get(url)
   cid = JSON.parse(response)
   character_details = cid.find {|character_hash| character_hash["name"] == input}
@@ -43,7 +44,7 @@ def character_in_detail(input)
 end
 
 def show_random_character
-  url = 'https://www.potterapi.com/v1/characters?key=$2a$10$GyAEHpxPsTfoiKHANOUWiOviE8TjqBoYk99ZGZ4dAXwu65dMGerIi'
+  url = 'https://www.potterapi.com/v1/characters?key=' + KEY[:key]
   response = RestClient.get(url)
   hpinfo = JSON.parse(response)
   random_char = hpinfo.select{|character_hash| character_hash}.sample
