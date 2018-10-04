@@ -4,21 +4,21 @@ class CLI
   FONT = TTY::Font.new(:doom)
 
   def welcome
-    puts FONT.write("ALOHOMORA", letter_spacing: 2)
-    puts "********************************************************************************************************"
-    puts "Hello there."
+    puts_super_fast FONT.write("ALOHOMORA", letter_spacing: 3)
+    puts_super_fast "********************************************************************************************************"
+    puts_fast "Hello there."
     puts ""
-    puts "My name is Professor Flitwick and will be helping you to create your very first Spell Book."
+    puts_fast "My name is Professor Flitwick and will be helping you to create your very first Spell Book."
     puts ""
-    puts "What is your Wizard name?"
-    puts "********************************************************************************************************"
+    puts_fast "What is your Wizard name?"
+    puts_super_fast "********************************************************************************************************"
   end
 
   def get_user_name_and_create
     user_name = gets.chomp
     User.create(name: user_name)
-    puts "Lovely to meet you #{User.last.name}!"
-    puts "********************************************************************************************************"
+    puts_fast "Lovely to meet you #{User.last.name}!"
+    puts_super_fast "********************************************************************************************************"
   end
 
   def display_home_list
@@ -33,21 +33,26 @@ class CLI
   end
 
   def get_spellbook_name
-    puts "********************************************************************************************************"
-    puts "Your Spell Book will contain five different spells of your choice."
-    puts "What title would you like to give it?"
-    puts "********************************************************************************************************"
+    puts_super_fast "********************************************************************************************************"
+    puts_fast "Your Spell Book will contain five different spells of your choice."
+    puts_fast "What title would you like to give it?"
+    puts_super_fast "********************************************************************************************************"
     sb_name = gets.chomp
     Spellbook.create(name: sb_name, user_id: User.last.id)
-    puts "********************************************************************************************************"
-    puts "Very creative. Let's begin filling #{Spellbook.last.name} with some magic."
+    puts_super_fast "********************************************************************************************************"
+    puts_fast "Very creative. Let's begin filling #{Spellbook.last.name} with some magic."
     begin_spellbook
   end
 
   def begin_spellbook
-    puts "********************************************************************************************************"
+    puts_super_fast "********************************************************************************************************"
     choose_between_5_spell_types
     save_or_ignore_spell
+  end
+
+  def choose_between_5_spell_types
+    choice = PROMPT.select("Pick between one of these 5 spell types to receive a random spell suggestion:", %w(Spell Charm Hex Curse Enchantment))
+    show_random_spell(choice)
   end
 
   def spellbook_array
@@ -59,26 +64,22 @@ class CLI
 
   def save_or_ignore_spell
     if spellbook_array.count > 4
-      puts "You have reached the limit of 5 spells. Let's take a look at your choices."
+      puts_fast "You have reached the limit of 5 spells. Let's take a look at your choices."
       view_spellbook
     else
       choice = PROMPT.select("Would you like to save #{Spell.last.name} to your spellbook?", %w(Yes No))
       case choice
       when "Yes"
-        Spell.update(Spell.last, :spellbook_id => Spellbook.last.id)
-        puts "Interesting. Very interesting...#{Spell.last.name} has been added to #{Spellbook.last.name}, #{User.last.name}."
-        puts "Now choose another!"
+        sb_id = Spellbook.last.id
+        Spell.last.update(:spellbook_id => sb_id)
+        puts_fast "Interesting. Very interesting...#{Spell.last.name} has been added to #{Spellbook.last.name}, #{User.last.name}."
+        puts_fast "Now choose another!"
         begin_spellbook
       when "No"
-        puts "If that is your wish, then let us try another."
+        puts_fast "If that is your wish, then let us try another."
         second_save_or_ignore_spell
       end
     end
-  end
-
-  def choose_between_5_spell_types
-    choice = PROMPT.select("Pick between one of these 5 spell types to receive a random spell suggestion:", %w(Curse Hex Charm Enchantment Spell))
-    show_random_spell(choice)
   end
 
   def second_save_or_ignore_spell
@@ -111,48 +112,48 @@ class CLI
   end
 
   def sorting_offer
-    puts "********************************************************************************************************"
-    puts "Well done #{User.last.name}, your book, #{Spellbook.last.name}, is complete!"
+    puts_super_fast "********************************************************************************************************"
+    puts_fast "Well done #{User.last.name}, your book, #{Spellbook.last.name}, is complete!"
     puts ""
-    puts "Something I did not mention to you before...the Sorting Hat has become rather, well really quite old as of late."
+    puts_fast "Something I did not mention to you before...the Sorting Hat has become rather, well really quite old as of late."
     puts ""
-    puts "We, professors at Hogwarts, have become increasingly concerned at some of the Sorting Hat's sorting choices."
+    puts_fast "We, professors at Hogwarts, have become increasingly concerned at some of the Sorting Hat's sorting choices."
     puts ""
-    puts "Your Spell Book can give us valuable insight about your character and personality based on your choices of spells."
+    puts_fast "Your Spell Book can give us valuable insight about your character and personality based on your choices of spells."
     puts ""
-    puts "Hence, it has been decided by Dumbledoor that with your consent, we may use your book to assist the Sorting Hat in placing you into the right house."
-    puts "********************************************************************************************************"
+    puts_fast "Hence, it has been decided by Dumbledoor that with your consent, we may use your book to assist the Sorting Hat in placing you into the right house."
+    puts_super_fast "********************************************************************************************************"
     options = ["Go on then, sort me!", "No thanks - I'd rather not."]
     choice = PROMPT.select("Would you like to be sorted into a Hogwarts House?", options)
     case choice
     when options[0]
       sorting
     when options[1]
-      puts "Suit yourself."
+      puts_fast "Suit yourself."
       display_home_list
     end
   end
 
   def sorting
-    spellbook_array.max_by(&:spell_type)
+    # bar = ProgressBar.new(100, :bar, :elapsed)
     if !!detect_curse
       puts ""
-      puts "Your desire to fill your book with at least one curse is truly frightening."
+      puts_fast "Your desire to fill your book with at least one curse is truly frightening."
       puts ""
-      puts "On behalf of the Wizarding community, it is with regret that you are hereby expelled."
-      puts FONT.write("Finite Incantatem", letter_spacing: 1)
-      puts FONT.write("THE END.", letter_spacing: 1)
+      puts_fast "On behalf of the Wizarding community, it is with regret that you are hereby expelled."
+      puts_super_fast FONT.write("Finite Incantatem", letter_spacing: 1)
+      puts_super_fast FONT.write("THE END.", letter_spacing: 1)
     elsif most_common_spelltype == "Hex"
-      puts FONT.write("SLYTHERIN", letter_spacing: 2)
+      puts_super_fast FONT.write("SLYTHERIN", letter_spacing: 2)
     elsif most_common_spelltype == "Charm"
-      puts FONT.write("RAVENCLAW", letter_spacing: 2)
+      puts_super_fast FONT.write("RAVENCLAW", letter_spacing: 2)
     elsif most_common_spelltype == "Enchantment"
-      puts FONT.write("GRYFFINDOR", letter_spacing: 2)
+      puts_super_fast FONT.write("GRYFFINDOR", letter_spacing: 2)
     elsif most_common_spelltype == "Spell"
-      puts FONT.write("HUFFLEPUFF", letter_spacing: 2)
+      puts_super_fast FONT.write("HUFFLEPUFF", letter_spacing: 2)
     else
-      puts FONT.write("UNSORTABLE", letter_spacing: 2)
-      puts "You must be a Muggle. Perhaps we better try again..."
+      puts_super_fast FONT.write("UNSORTABLE", letter_spacing: 2)
+      puts_fast "You must be a Muggle. Perhaps we better try again..."
       #ADD METHOD TO CHANGE A SPELL IN BOOK
     end
   end
@@ -167,7 +168,8 @@ class CLI
     spellbook_array.detect{|spell| spell.spell_type == "Curse"}
   end
 
+  def edit_spellbook
 
-
+  end
 
 end

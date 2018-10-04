@@ -11,5 +11,6 @@ gem "rake"
 gem 'tty-prompt'
 gem 'terminal-table'
 gem 'tty-font'
+gem 'progress_bar'
 
 # gem "activerecord", :require => 'active_record'
