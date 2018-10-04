@@ -146,13 +146,24 @@ class CLI
       puts_super_fast FONT.write("THE END.", letter_spacing: 1)
     elsif most_common_spelltype == "Hex"
       puts_super_fast FONT.write("SLYTHERIN", letter_spacing: 2)
-      House
+      house = House.find_by name: "Slytherin"
+      User.last.update(:house_id => house[:id])
+      house_menu
     elsif most_common_spelltype == "Charm"
       puts_super_fast FONT.write("RAVENCLAW", letter_spacing: 2)
+      house = House.find_by name: "Ravenclaw"
+      User.last.update(:house_id => house[:id])
+      house_menu
     elsif most_common_spelltype == "Enchantment"
       puts_super_fast FONT.write("GRYFFINDOR", letter_spacing: 2)
+      house = House.find_by name: "Gryffindor"
+      User.last.update(:house_id => house[:id])
+      house_menu
     elsif most_common_spelltype == "Spell"
       puts_super_fast FONT.write("HUFFLEPUFF", letter_spacing: 2)
+      house = House.find_by name: "Hufflepuff"
+      User.last.update(:house_id => house[:id])
+      house_menu
     else
       puts_super_fast FONT.write("UNSORTABLE", letter_spacing: 2)
       puts_fast "You must be a Muggle. Perhaps we better try again..."
@@ -168,6 +179,17 @@ class CLI
 
   def detect_curse
     spellbook_array.detect{|spell| spell.spell_type == "Curse"}
+  end
+
+  def house_menu(house)
+    options = ["Tell me about my house", "See classmates"]
+    choice = PROMPT.select("What would you like to do next?", options)
+    case choice
+    when options[0]
+      puts "TO BE MADE...."
+    when options[1]
+      puts "TO BE MADE...."
+    end
   end
 
   def edit_spellbook
