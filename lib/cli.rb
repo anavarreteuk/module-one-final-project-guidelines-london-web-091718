@@ -45,11 +45,11 @@ class CLI
     puts_super_fast FONT.write(" ALOHOMORA !", letter_spacing: 3)
     puts_super_fast PASTEL.yellow("********************************************************************************************************")
     puts ""
-    puts_fast "Hello there."
+    puts_fast "Hello there!"
     puts ""
-    puts_fast "My name is Professor Flitwick and will be helping you to create your very first Spell Book."
+    puts_fast "My name is Professor Flitwick and am here to welcome you to Hogwarts and help you settle in."
     puts ""
-    puts_fast "What is your Wizard name?"
+    puts_fast "To begin, would you please tell me your name?"
     puts ""
     puts_super_fast PASTEL.yellow("********************************************************************************************************")
   end
@@ -59,7 +59,7 @@ class CLI
     user_name = gets.chomp
     User.create(name: user_name)
     puts ""
-    puts_fast "Lovely to meet you #{User.last.name}!"
+    puts_fast "Tremendous name, #{User.last.name}! It is my pleasure to finally meet you at last."
     puts ""
     puts_super_fast PASTEL.yellow("********************************************************************************************************")
   end
@@ -383,7 +383,7 @@ class CLI
   end
 
   def more_character_info?
-    options = ["Yes - tell me more!", "No - take me back", "Main menu please.", "Quit."]
+    options = ["Tell me more", "Take me back", "Main Menu", "Quit"]
     choice = PROMPT.select("Would you like know more about a character?", options)
     case choice
     when options[0]

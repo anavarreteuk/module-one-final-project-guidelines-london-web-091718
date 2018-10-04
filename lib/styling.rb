@@ -43,7 +43,7 @@ module Styling
   def music
       options=["Yes", "No"]
       puts ""
-      choice=PROMPT.select("Would you like sound?",options)
+      choice=PROMPT.select("Would you like to enable sound?",options)
       case choice
         when options[0]
           @pid = fork{ exec 'afplay', "lib/opening.mp3" }
