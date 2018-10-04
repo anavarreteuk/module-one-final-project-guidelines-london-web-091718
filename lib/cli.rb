@@ -69,12 +69,12 @@ class CLI
   end
 
   def display_home_list
-    options = ["Find friends/characters", "Create Spellbook", "Quit"]
+    options = ["Character Dictionary", "Create Spellbook", "Quit"]
     puts ""
-    choice = PROMPT.select("What would you like to do?", options)
+    choice = PROMPT.select("Select one of the following to begin your magical journey...", options)
     case choice
     when options[0]
-      puts "TO BE MADE...."
+      get_friends
     when options[1]
       get_spellbook_name
     when options[2]
@@ -129,11 +129,12 @@ class CLI
         puts ""
         sb_id = Spellbook.last.id
         Spell.last.update(:spellbook_id => sb_id)
-        puts_slow "Interesting. Very interesting..."
+        puts_fast flitwick_comments
         puts ""
         puts_fast "#{Spell.last.name} has been added to #{Spellbook.last.name}, #{User.last.name}."
         puts ""
         puts_fast "Now choose another!"
+        puts ""
         begin_spellbook
       when "No"
         puts ""
@@ -141,6 +142,11 @@ class CLI
         second_save_or_ignore_spell
       end
     end
+  end
+
+  def flitwick_comments
+    comments = ["Interesting. Very interesting...", "Hmmm. How very peculiar.", "Your choice is very unique.", "I wonder what made you choose that.", "A Witch's or a Wizard's choice of spells can reveal the innermost workings of their soul."]
+    comment = comments.sample
   end
 
   def second_save_or_ignore_spell
@@ -166,7 +172,7 @@ class CLI
     rows << ["#{spellbook_array[4]["name"]}","#{spellbook_array[4]["effect"]}"]
 
     table = Terminal::Table.new :title => "#{Spellbook.last.name.upcase}", :headings => ['SPELL', 'EFFECT'], :rows => rows, :style => {:all_separators => true}
-    table.style = {:width => 100, :padding_left => 2, :border_x => "=", :border_i => "+"}
+    table.style = {:width => 110, :padding_left => 3, :border_x => "=", :border_i => "+"}
 
     puts PASTEL.black.on_white(table)
     #sorting_offer
@@ -174,6 +180,7 @@ class CLI
 
   def sorting_offer
     puts_super_fast PASTEL.yellow("********************************************************************************************************")
+    puts ""
     puts_fast "Well done #{User.last.name}, your book, #{Spellbook.last.name}, is complete!"
     puts ""
     puts_fast "Something I did not mention to you before...the Sorting Hat has become rather, well really quite old as of late."
@@ -182,8 +189,12 @@ class CLI
     puts ""
     puts_fast "Your Spell Book can give us valuable insight about your character and personality based on your choices of spells."
     puts ""
-    puts_fast "Hence, it has been decided by Dumbledoor that with your consent, we may use your book to assist the Sorting Hat in placing you into the right house."
+    puts_fast "Hence, it has been decided by Dumbledoor that with your consent, we may use your book to assist the Sorting Hat in"
+    puts ""
+    puts_fast "placing you into the right house."
+    puts ""
     puts_super_fast PASTEL.yellow("********************************************************************************************************")
+    puts ""
     options = ["Go on then, sort me!", "No thanks - I'd rather not."]
     choice = PROMPT.select("Would you like to be sorted into a Hogwarts House?", options)
     case choice
@@ -196,7 +207,11 @@ class CLI
   end
 
   def sorting
-    puts_slow PASTEL.yellow("* * * * * S O R T I N G * * * * ")
+    puts ""
+    puts ""
+    puts_slow PASTEL.yellow("* * * * * * * S O R T I N G * * * * * * *")
+    puts ""
+    puts ""
     # bar = ProgressBar.new(100, :bar, :elapsed)
     if !!detect_curse
       puts ""
@@ -242,6 +257,7 @@ class CLI
   end
 
   def house_menu
+    puts ""
     options = ["Tell me about my house", "See classmates"]
     choice = PROMPT.select("What would you like to do next?", options)
     case choice
@@ -257,6 +273,7 @@ class CLI
   end
 
   def house_info
+    puts ""
     user_house_id = User.last.house_id
     house = House.find_by id: user_house_id
     rows = []
@@ -291,6 +308,7 @@ class CLI
 
 
   def take_me_home_or_quit
+    puts ""
     options = ["Show me more! Take me to the secret menu!", "Quit."]
     choice = PROMPT.select("Would you like to explore more of Hogwarts now that you've been sorted or leave?", options)
     case choice
@@ -302,6 +320,7 @@ class CLI
   end
 
   def display_second_home_list
+    puts ""
     options = ["Find friends/characters", "View Spellbook", "View House", "Quit"]
     choice = PROMPT.select("Welcome to Hogwarts. Feel free to explore the following:", options)
     case choice
@@ -338,5 +357,73 @@ class CLI
     puts PASTEL.yellow("********************************************************************************************************")
     exit
   end
+
+  def get_friends
+    puts ""
+    options = ["View List of Characters", "View Characters by House", "View Characters by Species", "Random"]
+    choice = PROMPT.select("What would you like to do?", options)
+    case choice
+    when options[0]
+      character_list
+    when options[1]
+      view_characters_by_house
+    when options[2]
+      view_characters_by_species
+    when options[3]
+      show_random_character
+    end
+  end
+
+  def character_list
+      puts ""
+      puts_super_fast "********************************************************************************************************"
+      puts ""
+      puts_fast "Great choice, #{User.last.name}. Here is a list of all characters:"
+      characters_array = show_character_list_api
+      rows= characters_array.each_slice(4).to_a
+
+      table = Terminal::Table.new :title => "---------------------************     CHARACTER LIST    ***********-----------------------", :rows => rows, :style => {:all_separators => true}
+      puts ""
+      puts table
+      puts ""
+      more_character_info?
+  end
+
+  def more_character_info?
+    options = ["Yes - tell me more!", "No - take me back", "Main menu please.", "Quit."]
+    choice = PROMPT.select("Would you like know more about a character?", options)
+    case choice
+    when options[0]
+      puts ""
+      puts "Excellent. You are a curious student indeed! Please type in the name of the character you would like to know more about."
+      puts ""
+      input = gets.chomp
+      rows = character_in_detail(input).to_a.sort
+      rows.shift
+      rows.shift
+      table = Terminal::Table.new :title => "------------********   CHARACTER DETAIL   ******------------",:rows => rows, :style => {:all_separators => true}
+      puts ""
+      puts table
+      puts ""
+      display_home_list
+    when options[1]
+      get_friends
+    when options[2]
+      display_home_list
+    when options[3]
+      goodbye
+    end
+  end
+
+  def view_characters_by_house
+  end
+
+  def view_characters_by_species
+  end
+
+  def show_random_character
+  end
+
+
 
 end

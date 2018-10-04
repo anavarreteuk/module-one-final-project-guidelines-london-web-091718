@@ -25,3 +25,19 @@ def get_houses
   hpinfo = JSON.parse(response)
   hpinfo.each{|house| House.create(name: house["name"], mascot: house["mascot"], head_of_house: house["headOfHouse"], house_ghost: house["houseGhost"], founder: house["founder"], values: house["values"], colours: house["colors"])}
 end
+
+def show_character_list_api
+  url = 'https://www.potterapi.com/v1/characters?key=$2a$10$GyAEHpxPsTfoiKHANOUWiOviE8TjqBoYk99ZGZ4dAXwu65dMGerIi'
+  response = RestClient.get(url)
+  sfacinfo = JSON.parse(response)
+  characters = sfacinfo.map{|character_hash| character_hash["name"]}
+  characters
+end
+
+def character_in_detail(input)
+  url = 'https://www.potterapi.com/v1/characters?key=$2a$10$GyAEHpxPsTfoiKHANOUWiOviE8TjqBoYk99ZGZ4dAXwu65dMGerIi'
+  response = RestClient.get(url)
+  cid = JSON.parse(response)
+  character_details = cid.find {|character_hash| character_hash["name"] == input}
+  character_details
+end
