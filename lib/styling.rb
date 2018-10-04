@@ -40,4 +40,16 @@ module Styling
     print "\n"
   end
 
+  def music
+      options=["Yes", "No"]
+      puts ""
+      choice=PROMPT.select("Would you like sound?",options)
+      case choice
+        when options[0]
+          @pid = fork{ exec 'afplay', "lib/opening.mp3" }
+        when options[1]
+      end
+    end
+
+
 end

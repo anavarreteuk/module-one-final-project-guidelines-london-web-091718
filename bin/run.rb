@@ -5,6 +5,7 @@ require_relative '../config/environment'
 cli = CLI.new
 
 system("clear")
+cli.music
 get_houses
 cli.welcome_first
 cli.welcome

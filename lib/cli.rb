@@ -2,10 +2,6 @@ include Styling
 
 class CLI
 
-  def music
-    @pid = fork{ exec 'afplay', "lib/opening.mp3" }
-  end
-
   def welcome_first
       puts_super_fast <<-EOF
       MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
@@ -74,7 +70,7 @@ class CLI
     choice = PROMPT.select("Select one of the following to begin your magical journey...", options)
     case choice
     when options[0]
-      get_friends
+      character_dictionary
     when options[1]
       get_spellbook_name
     when options[2]
@@ -172,9 +168,9 @@ class CLI
     rows << ["#{spellbook_array[4]["name"]}","#{spellbook_array[4]["effect"]}"]
 
     table = Terminal::Table.new :title => "#{Spellbook.last.name.upcase}", :headings => ['SPELL', 'EFFECT'], :rows => rows, :style => {:all_separators => true}
-    table.style = {:width => 110, :padding_left => 3, :border_x => "=", :border_i => "+"}
+    table.style = {:width => 110, :padding_left => 2, :border_x => "=", :border_i => "+"}
 
-    puts PASTEL.black.on_white(table)
+    puts PASTEL.bright_cyan(table)
     #sorting_offer
   end
 
@@ -209,7 +205,7 @@ class CLI
   def sorting
     puts ""
     puts ""
-    puts_slow PASTEL.yellow("* * * * * * * S O R T I N G * * * * * * *")
+    puts_slow PASTEL.yellow("* * * * * * * * S O R T I N G * * * * * * * *")
     puts ""
     puts ""
     # bar = ProgressBar.new(100, :bar, :elapsed)
@@ -258,7 +254,7 @@ class CLI
 
   def house_menu
     puts ""
-    options = ["Tell me about my house", "See classmates"]
+    options = ["Tell me more about my house", "Find my classmates"]
     choice = PROMPT.select("What would you like to do next?", options)
     case choice
     when options[0]
@@ -321,11 +317,11 @@ class CLI
 
   def display_second_home_list
     puts ""
-    options = ["Find friends/characters", "View Spellbook", "View House", "Quit"]
+    options = ["View Character Dictionary", "View Spellbook", "View House", "Quit"]
     choice = PROMPT.select("Welcome to Hogwarts. Feel free to explore the following:", options)
     case choice
     when options[0]
-      puts "TO BE MADE...."
+      character_dictionary
     when options[1]
       view_spellbook
       take_me_home_or_quit
@@ -355,22 +351,20 @@ class CLI
     puts PASTEL.yellow("********************************************************************************************************")
     puts PASTEL.yellow("********************************************************************************************************")
     puts PASTEL.yellow("********************************************************************************************************")
+    exec 'killall afplay'
     exit
   end
 
-  def get_friends
+  def character_dictionary
     puts ""
-    options = ["View List of Characters", "View Characters by House", "View Characters by Species", "Random"]
+    options = ["View List of Characters", "Find Random Character"]
     choice = PROMPT.select("What would you like to do?", options)
+    puts ""
     case choice
     when options[0]
       character_list
     when options[1]
-      view_characters_by_house
-    when options[2]
-      view_characters_by_species
-    when options[3]
-      show_random_character
+      random_character
     end
   end
 
@@ -381,7 +375,6 @@ class CLI
       puts_fast "Great choice, #{User.last.name}. Here is a list of all characters:"
       characters_array = show_character_list_api
       rows= characters_array.each_slice(4).to_a
-
       table = Terminal::Table.new :title => "---------------------************     CHARACTER LIST    ***********-----------------------", :rows => rows, :style => {:all_separators => true}
       puts ""
       puts table
@@ -395,7 +388,7 @@ class CLI
     case choice
     when options[0]
       puts ""
-      puts "Excellent. You are a curious student indeed! Please type in the name of the character you would like to know more about."
+      puts_fast "Excellent. You are a curious student indeed! Please type in the character's name."
       puts ""
       input = gets.chomp
       rows = character_in_detail(input).to_a.sort
@@ -407,7 +400,7 @@ class CLI
       puts ""
       display_home_list
     when options[1]
-      get_friends
+      character_dictionary
     when options[2]
       display_home_list
     when options[3]
@@ -415,13 +408,10 @@ class CLI
     end
   end
 
-  def view_characters_by_house
-  end
-
-  def view_characters_by_species
-  end
-
-  def show_random_character
+  def random_character
+    show_random_character
+    puts ""
+    more_character_info?
   end
 
 
