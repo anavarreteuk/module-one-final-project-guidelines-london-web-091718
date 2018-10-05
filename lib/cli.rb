@@ -213,8 +213,17 @@ class CLI
       puts ""
       puts_fast "Your desire to fill your book with at least one curse is truly frightening."
       puts ""
-      puts_fast "On behalf of the Wizarding community, it is with regret that you are hereby expelled."
-      goodbye
+      puts_fast "On behalf of the Wizarding community, it is with regret that you are hereby expelled, goodbye."
+      puts ""
+      puts_super_fast FONT.write("FINITE", letter_spacing: 1)
+      puts_super_fast FONT.write("INCANTATEM !", letter_spacing: 1)
+      puts ""
+      puts_slow "WAIT! The Sorting Hat has changed its mind. Better be....."
+      puts ""
+      puts_super_fast FONT.write("SLYTHERIN", letter_spacing: 2)
+      house = House.find_by name: "Slytherin"
+      User.last.update(:house_id => house[:id])
+      house_menu
     else
       puts_super_fast FONT.write(most_common_spelltype, letter_spacing: 2)
       house = House.find_by name: most_common_spelltype
@@ -224,7 +233,7 @@ class CLI
   end
 
   def most_common_spelltype
-    sorting = {"Hex" => "Slytherin", "Spell" => "Hufflepuff", "Charm" => "Ravenclaw", "Enchantment" => "Gryffindor"}
+    sorting = {"Hex" => "Slytherin", "Spell" => "Gryffindor", "Charm" => "Ravenclaw", "Enchantment" => "Hufflepuff"}
     spell_names_array = spellbook_array.map{|spell| spell.spell_type}
     counted_hash = spell_names_array.uniq.map { |spell| [spell, spell_names_array.count(spell)] }.to_h
     spell = counted_hash.key(counted_hash.values.max)
@@ -335,7 +344,7 @@ class CLI
 
   def character_dictionary
     puts ""
-    options = ["View List of Characters", "Find Random Character"]
+    options = ["View List of Characters", "Find Random Character", "Main Menu", "Quit"]
     choice = PROMPT.select("What would you like to do?", options)
     puts ""
     case choice
@@ -343,6 +352,10 @@ class CLI
       character_list
     when options[1]
       random_character
+    when options [2]
+    display_home_list
+    when options [3]
+    goodbye
     end
   end
 
