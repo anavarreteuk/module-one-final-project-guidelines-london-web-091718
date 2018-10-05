@@ -64,8 +64,8 @@ class CLI
     puts_super_fast PASTEL.yellow("********************************************************************************************************")
   end
 
-  def display_home_list
-    options = ["Character Dictionary", "Create Spellbook", "Quit"]
+  def original_menu
+    options = ["Character Dictionary: search and learn", "Create Spellbook: explore and add spells to your spellbook with a twist at the end...", "Quit"]
     puts ""
     choice = PROMPT.select("Select one of the following to begin your magical journey...", options)
     case choice
@@ -91,7 +91,7 @@ class CLI
     puts_fast "Very creative. Let's begin filling #{Spellbook.last.name} with some magic."
     puts ""
     puts_super_fast PASTEL.yellow("********************************************************************************************************")
-    #begin_spellbook
+    begin_spellbook
   end
 
   def begin_spellbook
@@ -116,7 +116,7 @@ class CLI
     if spellbook_array.count > 4
       puts_fast "You have reached the limit of 5 spells. Let's take a look at your choices."
       puts ""
-      view_spellbook
+      which_user_spellbook_and_path?
     else
       puts ""
       choice = PROMPT.select("Would you like to save #{Spell.last.name} to your spellbook?", %w(Yes No))
@@ -169,9 +169,26 @@ class CLI
 
     table = Terminal::Table.new :title => "#{Spellbook.last.name.upcase}", :headings => ['SPELL', 'EFFECT'], :rows => rows, :style => {:all_separators => true}
     table.style = {:width => 110, :padding_left => 2, :border_x => "=", :border_i => "+"}
-
     puts PASTEL.bright_cyan(table)
-    #sorting_offer
+
+    # sorting_offer
+  end
+
+  def which_user_spellbook_and_path?
+    if !!User.last.house_id
+      view_spellbook
+    else
+      view_spellbook
+      sorting_offer
+    end
+  end
+
+  def which_menu?
+    if !!User.last.house_id
+      secret_menu
+    else
+      original_menu
+    end
   end
 
   def sorting_offer
@@ -185,7 +202,7 @@ class CLI
     puts ""
     puts_fast "Your Spell Book can give us valuable insight about your character and personality based on your choices of spells."
     puts ""
-    puts_fast "Hence, it has been decided by Dumbledoor that with your consent, we may use your book to assist the Sorting Hat in"
+    puts_fast "Hence, it has been decided by Dumbledore that with your consent, we may use your book to assist the Sorting Hat in"
     puts ""
     puts_fast "placing you into the right house."
     puts ""
@@ -198,7 +215,7 @@ class CLI
       sorting
     when options[1]
       puts_fast "Suit yourself. You will miss out on the secret menu if you do..."
-      display_home_list
+      original_menu
     end
   end
 
@@ -218,7 +235,9 @@ class CLI
       puts_super_fast FONT.write("FINITE", letter_spacing: 1)
       puts_super_fast FONT.write("INCANTATEM !", letter_spacing: 1)
       puts ""
-      puts_slow "WAIT! The Sorting Hat has changed its mind. Better be....."
+      puts_slow "WAIT!"
+      puts ""
+      puts_slow "The Sorting Hat has changed its mind. Better be....."
       puts ""
       puts_super_fast FONT.write("SLYTHERIN", letter_spacing: 2)
       house = House.find_by name: "Slytherin"
@@ -276,8 +295,7 @@ class CLI
     table.style = {:width => 100, :padding_left => 2, :border_x => "=", :border_i => "+"}
 
     colourfy_table(table)
-    # puts table
-    take_me_home_or_quit
+    intro_to_secret_menu
   end
 
   def colourfy_table(table)
@@ -295,19 +313,19 @@ class CLI
   end
 
 
-  def take_me_home_or_quit
+  def intro_to_secret_menu
     puts ""
     options = ["Show me more! Take me to the secret menu!", "Quit."]
     choice = PROMPT.select("Would you like to explore more of Hogwarts now that you've been sorted or leave?", options)
     case choice
     when options[0]
-      display_second_home_list
+      which_menu?
     when options[1]
       goodbye
     end
   end
 
-  def display_second_home_list
+  def secret_menu
     puts ""
     options = ["View Character Dictionary", "View Spellbook", "View House", "Quit"]
     choice = PROMPT.select("Welcome to Hogwarts. Feel free to explore the following:", options)
@@ -315,11 +333,11 @@ class CLI
     when options[0]
       character_dictionary
     when options[1]
-      view_spellbook
-      take_me_home_or_quit
+      which_user_spellbook_and_path?
+      secret_menu_or_quit
     when options[2]
       house_info
-      take_me_home_or_quit
+      secret_menu_or_quit
     when options[3]
       goodbye
     end
@@ -353,9 +371,9 @@ class CLI
     when options[1]
       random_character
     when options [2]
-    display_home_list
+      which_menu?
     when options [3]
-    goodbye
+      goodbye
     end
   end
 
@@ -389,11 +407,11 @@ class CLI
       puts ""
       puts table
       puts ""
-      display_home_list
+      which_menu?
     when options[1]
       character_dictionary
     when options[2]
-      display_home_list
+      which_menu?
     when options[3]
       goodbye
     end
@@ -405,6 +423,25 @@ class CLI
     more_character_info?
   end
 
+  def which_menu?
+    if !!User.last.house_id
+      secret_menu
+    else
+      original_menu
+    end
+  end
+
+  def secret_menu_or_quit
+    puts ""
+    options = ["Main Menu", "Quit"]
+    choice = PROMPT.select("Would you like to explore more of the unlocked menu or bid us farewell?", options)
+    case choice
+    when options[0]
+      which_menu?
+    when options[1]
+      goodbye
+    end
+  end
 
 
 end

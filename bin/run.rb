@@ -10,6 +10,6 @@ get_houses
 cli.welcome_first
 cli.welcome
 cli.get_user_name_and_create
-cli.display_home_list
-cli.begin_spellbook
-cli.sorting_offer
+cli.original_menu
+# cli.begin_spellbook
+# cli.sorting_offer
