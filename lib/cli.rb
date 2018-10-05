@@ -81,7 +81,7 @@ class CLI
 
   def get_spellbook_name
     puts ""
-    puts_fast "Your Spell Book will contain five different spells of your choice."
+    puts_fast "Your Spellbook will contain five different spells of your choice."
     puts ""
     puts_fast "What title would you like to give it?"
     puts ""
@@ -109,7 +109,7 @@ class CLI
     user_spellbook = []
     user_spellbook << Spell.where(spellbook_id: Spellbook.last.id)
     flattened_user_spellbook = user_spellbook.flatten
-    return flattened_user_spellbook
+    flattened_user_spellbook
   end
 
   def save_or_ignore_spell
@@ -200,7 +200,7 @@ class CLI
     puts ""
     puts_fast "We professors at Hogwarts, have become increasingly concerned at some of the Sorting Hat's sorting choices."
     puts ""
-    puts_fast "Your Spell Book can give us valuable insight about your character and personality based on your choices of spells."
+    puts_fast "Your Spellbook can give us valuable insight about your character and personality based on your choices of spells."
     puts ""
     puts_fast "Hence, it has been decided by Dumbledore that with your consent, we may use your book to assist the Sorting Hat in"
     puts ""
@@ -265,13 +265,32 @@ class CLI
 
   def house_menu
     puts ""
-    options = ["Tell me more about my house", "Find my classmates"]
+    options = ["Tell me more about my house", "Quit"]
     choice = PROMPT.select("What would you like to do next?", options)
     case choice
     when options[0]
       house_info
     when options[1]
-      puts "TO BE MADE...."
+      goodbye
+    end
+  end
+
+  def user_classmates
+    user_house_id = User.last.house_id
+    house = House.where(id: user_house_id)
+    puts ""
+    puts_fast "Including yourself, the following users are also in #{house[0].name}:"
+    classmates_array
+    which_menu?
+  end
+
+  def classmates_array
+    user_classmates = []
+    user_classmates << User.where(house_id: User.last.house_id)
+    flattened_user_classmates = user_classmates.flatten
+    flattened_user_classmates.map do |classmate|
+      puts ""
+      puts_slow classmate.name
     end
   end
 
@@ -295,7 +314,7 @@ class CLI
     table.style = {:width => 100, :padding_left => 2, :border_x => "=", :border_i => "+"}
 
     colourfy_table(table)
-    intro_to_secret_menu
+    secret_menu_or_quit
   end
 
   def colourfy_table(table)
@@ -312,22 +331,26 @@ class CLI
     end
   end
 
+  # def intro_to_secret_menu_or_secret_menu
+  #   intro_to_secret_menu
+  #   secret_menu_or_quit
+  # end
 
-  def intro_to_secret_menu
-    puts ""
-    options = ["Show me more! Take me to the secret menu!", "Quit."]
-    choice = PROMPT.select("Would you like to explore more of Hogwarts now that you've been sorted or leave?", options)
-    case choice
-    when options[0]
-      which_menu?
-    when options[1]
-      goodbye
-    end
-  end
+  # def intro_to_secret_menu
+  #   puts ""
+  #   options = ["Show me more! Take me to the secret menu!", "Quit"]
+  #   choice = PROMPT.select("Would you like to explore more of Hogwarts now that you've been sorted or leave?", options)
+  #   case choice
+  #   when options[0]
+  #     which_menu?
+  #   when options[1]
+  #     goodbye
+  #   end
+  # end
 
   def secret_menu
     puts ""
-    options = ["View Character Dictionary", "View Spellbook", "View House", "Quit"]
+    options = ["View Character Dictionary", "View Spellbook", "View House", "View Classmates", "Quit"]
     choice = PROMPT.select("Welcome to Hogwarts. Feel free to explore the following:", options)
     case choice
     when options[0]
@@ -339,6 +362,8 @@ class CLI
       house_info
       secret_menu_or_quit
     when options[3]
+      user_classmates
+    when options[4]
       goodbye
     end
   end
@@ -442,6 +467,5 @@ class CLI
       goodbye
     end
   end
-
 
 end
