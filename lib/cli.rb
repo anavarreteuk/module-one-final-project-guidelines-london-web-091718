@@ -448,14 +448,6 @@ class CLI
     more_character_info?
   end
 
-  def which_menu?
-    if !!User.last.house_id
-      secret_menu
-    else
-      original_menu
-    end
-  end
-
   def secret_menu_or_quit
     puts ""
     options = ["Main Menu", "Quit"]

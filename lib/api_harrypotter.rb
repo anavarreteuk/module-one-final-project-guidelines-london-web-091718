@@ -3,9 +3,12 @@ require 'active_record'
 require 'json'
 require 'pry'
 require_relative '../app/models/spell.rb'
-require_relative '../config/api_key'
+# require_relative '../config/api_key'
 
 # Bundler.require
+
+KEY = {:key => '$2a$10$GyAEHpxPsTfoiKHANOUWiOviE8TjqBoYk99ZGZ4dAXwu65dMGerIi'}
+
 
 def show_random_spell(spell_type)
   url = 'https://www.potterapi.com/v1/spells?key=' + KEY[:key]
